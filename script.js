@@ -1,3 +1,43 @@
+const backendURL = "https://chess-flask-backend-rqbp.onrender.com";
+
+function sendRawPGN() {
+    var pgn = document.getElementById('pgnInput').value.trim();
+
+    if (pgn === "") {
+        alert("Please enter a PGN before sending.");
+        return;
+    }
+
+    // Send the raw PGN to the backend
+    fetch("https://chess-flask-backend-rqbp.onrender.com/upload_pgn", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ pgn: pgn })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            console.error("Error from backend:", data.error);
+        } else {
+            console.log("Raw PGN sent successfully.");
+            console.log("Response from backend:", data);
+            console.log("Predicted Elo ratings:");
+            console.log("White Elo:", data.white_elo);
+            console.log("Black Elo:", data.black_elo);
+
+            // Update the results section with Elo ratings
+            document.getElementById('eloResults').textContent = 
+                "White Elo: " + data.white_elo + " | Black Elo: " + data.black_elo;
+        }
+    })
+    .catch(error => {
+        console.error("Error sending PGN:", error);
+    });
+}
+
+
 function extractMovesFromPGN(pgn) {
     // Remove metadata (lines starting with '[')
     pgn = pgn.replace(/\[.*?\]\s*/g, '');
@@ -60,6 +100,9 @@ document.getElementById('loadGame').addEventListener('click', function() {
     currentMoveIndex = 0;
     board.position(game.fen());
 });
+
+document.getElementById('sendPGN').addEventListener('click', sendRawPGN);
+
 
 // Move forward (Next Move)
 document.getElementById('nextMove').addEventListener('click', function() {
