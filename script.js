@@ -1,8 +1,21 @@
+function extractMovesFromPGN(pgn) {
+    // Remove metadata (lines starting with '[')
+    pgn = pgn.replace(/\[.*?\]\s*/g, '');
+
+    // Remove move numbers and results (e.g., "1.", "1-0", "1/2-1/2")
+    pgn = pgn.replace(/\d+\.+|\d+\s*-\s*\d+|\d+\/\d+-\d+\/\d+/g, '');
+
+    // Remove extra spaces and newlines
+    pgn = pgn.replace(/\s+/g, ' ').trim();
+
+    return pgn;
+}
+
 // Initialize the chessboard
 var board = Chessboard('board', {
     draggable: false,
     position: 'start',
-    pieceTheme: 'chessboard_js/img/chesspieces/wikipedia/{piece}.png' 
+    pieceTheme: 'chessboard_js/img/chesspieces/wikipedia/{piece}.png'
 });
 
 // Initialize the game
@@ -19,39 +32,54 @@ document.getElementById('loadGame').addEventListener('click', function() {
         return;
     }
 
-    game.reset();
+    var cleanedPGN = extractMovesFromPGN(pgn);
 
-    if (!game.load_pgn(pgn)) {
+    // Reset the game and load the PGN
+    game.reset();
+    if (!game.load_pgn(cleanedPGN)) {
         alert("Invalid PGN. Please check your input.");
         return;
     }
 
-    // Store move history
+    // Store move history from the loaded PGN
     moves = game.history({ verbose: true });
-    currentMoveIndex = 0;
-    board.position('start');
 
-    console.log("Game Loaded. Moves:", moves);
+    // Format moves with move numbers
+    let formattedMoves = '';
+    for (let i = 0; i < moves.length; i++) {
+        if (i % 2 === 0) {
+            formattedMoves += `${Math.floor(i / 2) + 1}. `; // Add move number
+        }
+        formattedMoves += moves[i].san + ' '; // Add move notation
+    }
+    // Display the formatted moves
+    document.getElementById('cleanedPGNDisplay').textContent = "Game loaded successfully.\n\n " + formattedMoves;
+
+    // Reset the game to the starting position so we can replay moves step-by-step
+    game.reset();
+    currentMoveIndex = 0;
+    board.position(game.fen());
 });
 
 // Move forward (Next Move)
 document.getElementById('nextMove').addEventListener('click', function() {
     if (currentMoveIndex < moves.length) {
-        game.move(moves[currentMoveIndex]);
-        board.position(game.fen());
+        let move = moves[currentMoveIndex];  // Get the next move object
+        let result = game.move(move.san);  // Apply move in SAN format
+        if (!result) {
+            return;
+        }
+        board.position(game.fen());  // Update board position
         currentMoveIndex++;
-
-        console.log("Moved Forward:", moves[currentMoveIndex - 1]);
     }
 });
 
 // Move backward (Previous Move)
 document.getElementById('prevMove').addEventListener('click', function() {
     if (currentMoveIndex > 0) {
-        game.undo();
+        game.undo();  // Undo last move
         currentMoveIndex--;
-        board.position(game.fen());
-
-        console.log("Moved Back:", moves[currentMoveIndex]);
+        board.position(game.fen());  // Update board position
     }
 });
+
