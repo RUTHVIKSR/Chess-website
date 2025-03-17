@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess PGN Viewer</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Chessboard.js and jQuery -->
+    <link rel="stylesheet" href="chessboard_js/css/chessboard-1.0.0.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Chess PGN Viewer</h1>
+    <textarea id="pgnInput" placeholder="Paste your PGN here"></textarea>
+    <br>
+    <button id="loadGame">Load Game</button>
+    
+    <div id="board" style="width: 400px;"></div>
+    <button id="prevMove">Previous Move</button>
+    <button id="nextMove">Next Move</button>
+
+    <!-- Include chess.js -->
+    <script src="chess.min.js"></script>
+    <!-- Include chessboard.js -->
+    <script src="chessboard_js/js/chessboard-1.0.0.min.js"></script>
+    <!-- Custom script -->
+    <script src="script.js"></script>
+</body>
+</html>

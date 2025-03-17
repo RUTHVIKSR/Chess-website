@@ -1,0 +1,20 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#board {
+    margin: 20px auto;
+}
+
+textarea {
+    width: 600px;
+    height: 100px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
