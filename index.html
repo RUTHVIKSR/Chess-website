@@ -3,42 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess PGN Viewer</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Chess Elo Predictor - Analyze chess games and predict player ratings">
+    <meta name="keywords" content="chess, elo, rating, prediction, PGN, analysis">
+    <meta name="author" content="Chess Elo Predictor">
     
-    <!-- Chessboard.js and jQuery -->
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Chess Elo Predictor">
+    <meta property="og:description" content="Analyze chess games and predict player ratings">
+    <meta property="og:type" content="website">
+    
+    <title>Chess Elo Predictor</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="chessboard_js/css/chessboard-1.0.0.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Chess Elo Predictor</h1>
-    <textarea id="pgnInput" placeholder="Paste your PGN here"></textarea>
-    <br>
-    <button id="loadGame">Load Game</button>
+    <header>
+        <div class="header-container">
+            <h1>Chess Elo Predictor</h1>
+            <p class="subtitle">Analyze your chess games and predict player ratings</p>
+        </div>
+    </header>
 
-    <br><br>
-    <div id="cleanedPGNDisplay" style="white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; width: 600px; margin: auto;"></div>
+    <main>
+        <div class="content-wrapper">
+            <section class="input-section" aria-label="Game Input">
+                <h2 class="section-title">Game Analysis</h2>
+                <div class="pgn-input-container">
+                    <label for="pgnInput" class="input-label">Enter your chess game in PGN format:</label>
+                    <div class="textarea-container">
+                        <textarea 
+                            id="pgnInput" 
+                            placeholder="Paste your PGN here (e.g., 1. e4 e5 2. Nf3 Nc6 ...)"
+                            aria-label="PGN input"
+                            rows="8"
+                        ></textarea>
+                        <div class="textarea-info">Maximum 1000 characters</div>
+                    </div>
+                    <button id="loadGame" class="primary-button">
+                        <span class="button-icon">📋</span>
+                        <span>Load Game</span>
+                    </button>
+                </div>
+            </section>
 
-    
-    <div id="board" style="width: 400px;"></div>
-    <button id="prevMove">Previous Move</button>
-    <button id="nextMove">Next Move</button>
-    <br><br>
+            <div class="game-analysis-container">
+                <section class="game-display" aria-label="Game Display">
+                    <h2 class="section-title">Game Display</h2>
+                    <div class="game-content">
+                        <div class="pgn-container">
+                            <h3 class="subsection-title">PGN Notation</h3>
+                            <div id="cleanedPGNDisplay" class="pgn-display" aria-live="polite"></div>
+                        </div>
+                        
+                        <div class="board-container">
+                            <h3 class="subsection-title">Chess Board</h3>
+                            <div id="board" class="chess-board"></div>
+                            <div class="board-controls">
+                                <button id="prevMove" aria-label="Previous move" class="control-button">
+                                    <span class="button-icon">◀</span>
+                                    <span>Previous</span>
+                                </button>
+                                <button id="nextMove" aria-label="Next move" class="control-button">
+                                    <span>Next</span>
+                                    <span class="button-icon">▶</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-    <button id="sendPGN">Predict Elo Rating</button>
-    <br><br>
+                <section class="prediction-section" aria-label="Elo Prediction">
+                    <h2 class="section-title">Elo Prediction</h2>
+                    <p class="prediction-info">Click the button below to analyze the game and predict the Elo ratings of both players.</p>
+                    <button id="sendPGN" class="primary-button prediction-button">
+                        <span class="button-text">Predict Elo Rating</span>
+                        <span class="loading-spinner" hidden></span>
+                    </button>
+                </section>
 
-    <!-- New Results Section -->
-    <div id="results" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px; width: 600px; margin: auto;">
-    <h2>Results</h2>
-    <p id="eloResults">Elo ratings will be displayed here.</p>
-    </div>
+                <section class="results-section" aria-label="Prediction Results">
+                    <h2 class="section-title">Results</h2>
+                    <div id="results" class="results-container">
+                        <div id="errorMessage" class="error-message" hidden></div>
+                        <div id="eloResults" class="elo-results">
+                            <div class="elo-placeholder">
+                                <span class="placeholder-icon">📊</span>
+                                <p>Elo ratings will be displayed here after analysis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
 
-    <!-- Include chess.js -->
+    <footer>
+        <div class="footer-container">
+            <p>Chess Elo Predictor - Analyze your chess games</p>
+            <p class="footer-links">
+                <a href="#" class="footer-link">About</a> • 
+                <a href="#" class="footer-link">How it works</a> • 
+                <a href="#" class="footer-link">Contact</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.js"></script>
-    <!-- Include chessboard.js -->
     <script src="chessboard_js/js/chessboard-1.0.0.min.js"></script>
-    <!-- Custom script -->
     <script src="script.js"></script>
 </body>
 </html>
